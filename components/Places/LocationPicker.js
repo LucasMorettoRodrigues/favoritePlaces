@@ -1,11 +1,49 @@
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
+import {
+  getCurrentPositionAsync,
+  useForegroundPermissions,
+  PermissionStatus,
+} from "expo-location";
+import { useNavigation } from "@react-navigation/native";
 
 export default LocationPicker = () => {
-  function getLocationHandler() {}
+  const [locationPermissionInformation, requestPermission] =
+    useForegroundPermissions();
 
-  function pickMapHandler() {}
+  const navigation = useNavigation();
+
+  async function verifyPermission() {
+    if (
+      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+    ) {
+      const permissionResponse = await requestPermission();
+
+      return permissionResponse.granted;
+    }
+
+    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+      Alert.alert(
+        "Insufficient Permissions!",
+        "You need to grant camera permissions to use this app."
+      );
+    }
+  }
+
+  async function getLocationHandler() {
+    const hasPermission = await verifyPermission();
+
+    if (!hasPermission) {
+      return;
+    }
+
+    const location = await getCurrentPositionAsync();
+  }
+
+  function pickMapHandler() {
+    navigation.navigate("Map");
+  }
 
   return (
     <View>
