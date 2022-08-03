@@ -1,10 +1,10 @@
 import { launchCameraAsync } from "expo-image-picker";
 import { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
-export default ImagePicker = () => {
+export default ImagePicker = ({ onTakeImage }) => {
   const [pickedImage, setPickedImage] = useState();
 
   const handleTakeImage = async () => {
@@ -15,6 +15,7 @@ export default ImagePicker = () => {
     });
 
     setPickedImage(image.uri);
+    onTakeImage(image.uri);
   };
 
   let imagePreview = <Text>No image taken yet.</Text>;
