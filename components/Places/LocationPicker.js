@@ -62,6 +62,7 @@ export default LocationPicker = ({ onPickLocation }) => {
     }
 
     const location = await getCurrentPositionAsync();
+
     setPickedLocation({
       lat: location.coords.latitude,
       lng: location.coords.longitude,

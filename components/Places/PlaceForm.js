@@ -4,8 +4,9 @@ import { Colors } from "../../constants/colors";
 import { Button } from "../UI/Button";
 import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
+import { Place } from "../../models/place";
 
-export default PlaceForm = () => {
+export default PlaceForm = ({ onCreatePlace }) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [pickedLocation, setPickedLocation] = useState();
   const [selectedImage, setSelectedImage] = useState();
@@ -19,10 +20,18 @@ export default PlaceForm = () => {
   }
 
   const pickLocationHandler = useCallback((location) => {
-    setSelectedImage(location);
+    setPickedLocation(location);
   }, []);
 
-  function savePlaceHandler() {}
+  function savePlaceHandler() {
+    const placeData = new Place(
+      enteredTitle,
+      selectedImage,
+      "Address",
+      pickedLocation
+    );
+    onCreatePlace(placeData);
+  }
 
   return (
     <ScrollView style={styles.form}>
